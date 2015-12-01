@@ -1,4 +1,4 @@
-#include "LightTouch.h"
+#include "LightTouch/LightTouch.h"
 
 //Define Pins : XP and YM can be digital Pins
 #define XP A0
@@ -8,9 +8,6 @@
 
 
 LightTouch Touch = LightTouch(XP, YP, XM, YM);
-
-SYSTEM_MODE(SEMI_AUTOMATIC);
-
 
 void setup(){
 	Serial.begin(57600);
