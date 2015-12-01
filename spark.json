@@ -1,0 +1,7 @@
+{
+  "name": "Light-Touch",
+  "author": "Benjamin Veenema <ben@veenemadesignworks.com>",
+  "license": "GNU GPLv3",
+  "version": "0.0.0",
+  "description": "A light-weight [4-wire] Touchscreen library"
+}
