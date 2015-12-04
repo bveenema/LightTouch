@@ -33,6 +33,9 @@ bool LightTouch::update(){
   if(_touch>0){
     readTouchY();
     readTouchX();
+    #ifdef EnablePressureRead
+      readPressure();
+    #endif
   }
 
   // Wait for two positive scan results
@@ -46,11 +49,11 @@ bool LightTouch::update(){
 
 bool LightTouch::scan(){
   pinMode(_xp, OUTPUT);
-  pinResetFast(_xp);
-
   pinMode(_xm, INPUT);
   pinMode(_yp, INPUT);
   pinMode(_ym, INPUT_PULLUP);
+
+  pinResetFast(_xp);
 
 
   //Wait for output to settle
@@ -109,3 +112,32 @@ int16_t LightTouch::getY(void){
   #endif
   return _yCoord;
 }
+
+#ifdef EnablePressureRead
+void LightTouch::setRXPlate(uint16_t rxPlate){
+  _rxPlate = rxPlate;
+}
+
+int16_t LightTouch::readPressure(void){
+  //Read Z1,Z2
+  pinMode(_xp, OUTPUT);
+  pinMode(_xm, INPUT);
+  pinMode(_yp, INPUT);
+  pinMode(_ym, OUTPUT);
+
+  pinResetFast(_xp);
+  pinSetFast(_ym);
+
+  uint16_t Z1 = analogRead(_xm);
+  uint16_t Z2 = analogRead(_yp);
+
+  //Calculate Rtouch (ADCx was previously calculated)
+  _pressure = _rxPlate *(_ADCx*100/ADC_MAX_VALUE)*((Z2*100/Z1)-100);
+  _pressure /= 10000;
+
+  return _pressure;
+}
+int16_t LightTouch::getPressure(void){
+  return _pressure;
+}
+#endif

@@ -17,6 +17,10 @@
 #ifndef LightTouch_h
 #define LightTouch_h
 
+//If you want to use perform pressure readings, define EnablePressureRead
+//Pressure readings are fast but do add some time and code overhead
+#define EnablePressureRead
+
 //Set INVERTX or INVERTY to 1 to invert the respective axis
 #define INVERTX 1
 #define INVERTY 1
@@ -66,12 +70,18 @@ class LightTouch {
   bool scan(void);
   int16_t readTouchY(void);
   int16_t readTouchX(void);
+  #ifdef EnablePressureRead
+    void setRXPlate(uint16_t rxPlate);
+    int16_t readPressure(void);
+    int16_t getPressure(void);
+  #endif
 
 private:
   bool _touch;
   uint8_t _yp, _ym, _xm, _xp;
-  uint16_t _ADCx, _ADCy;
+  uint16_t _ADCx, _ADCy, _rxPlate;
   int16_t _xCoord, _yCoord;
+  int32_t _pressure;
 };
 
 #endif

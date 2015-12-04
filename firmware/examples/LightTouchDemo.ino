@@ -13,16 +13,22 @@ void setup(){
 	Serial.begin(57600);
 	delay(1000);
 
+	//If EnablePressureRead is defined, you must set the X-Plate resistance
+	Touch.setRXPlate(300);
+
 }
 void loop(){
 	int16_t touchY = 0;
 	int16_t touchX = 0;
+	int16_t touchP = 0;
 	uint8_t isTouching = Touch.update();
 	if(isTouching){
 		touchX = Touch.getX();
 		touchY = Touch.getY();
+		touchP = Touch.getPressure();
 		Serial.print("X = "); Serial.print(touchX);
 		Serial.print("\tY = "); Serial.print(touchY);
+		Serial.printf("\t p = %d",touchP);
 		Serial.println(" ");
 		delay(100);
 	}
